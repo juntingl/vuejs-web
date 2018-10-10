@@ -1,7 +1,7 @@
 module.exports = {
-  outputDir: './vuejs-web/dist/',
-  baseUrl: undefined,
-  assetsDir: './vuejs-web/dist/',
+  outputDir: undefined,
+  baseUrl: '/vuejs-web/dist/',
+  assetsDir: undefined,
   runtimeCompiler: undefined,
   productionSourceMap: undefined,
   parallel: undefined,

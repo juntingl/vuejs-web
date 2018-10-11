@@ -7,7 +7,7 @@
           <div class="text-md">
             <a v-for="item of contacts"
               :key="item.title"
-              :title="item.title"
+              v-title="item.title"
               :href="item.link"
               :style="contactStyle"
             >
@@ -27,7 +27,7 @@
                   <a :href="item.link" target="_blank">
                     <img
                       :src="item.logo"
-                      :title="item.title"
+                      v-title="item.title"
                       :alt="item.title"
                       class="footer-sponsor-link"
                       width="98"
@@ -51,7 +51,7 @@
               <ul class="list-unstyled">
                 <li v-for="item of other.list" :key="item.title">
                   <a :href="item.link"
-                    :title="item.title"
+                    v-title="item.title"
                     target="_blank"
                   >
                     <i :class="`fa fa-${item.icon}`"></i>
@@ -68,8 +68,13 @@
 </template>
 
 <script>
+import title from '@/directives/title';
+
 export default {
   name: 'TheFooter',
+  directives: {
+    title
+  },
   data () {
     return {
       description: 'VuejsCaff 是一个 Vuejs 的知识社区',

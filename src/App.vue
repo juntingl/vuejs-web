@@ -1,16 +1,19 @@
 <template>
   <div id="wrap">
-    <TheHeader />
+    <TheHeader/>
+    <TheFooter/>
   </div>
 </template>
 
 <script>
 import TheHeader from '@/components/layouts/TheHeader';
+import TheFooter from '@/components/layouts/TheFooter';
 
 export default {
   name: 'app',
   components: {
-    TheHeader
+    TheHeader,
+    TheFooter
   }
 }
 </script>

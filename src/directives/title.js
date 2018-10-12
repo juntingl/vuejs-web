@@ -1,5 +1,11 @@
+/**
+ * 指令触发，显示提示框
+ * 控制显示提示框位置样式
+ * @param {Object} el Document Object
+ * @param {String} title 显示 title
+ */
 function showTitle(el, title) {
-  // 弹出窗口
+  // 提示框
   const popover = getPopover();
   const popoverStyle = popover.style;
 
@@ -7,20 +13,24 @@ function showTitle(el, title) {
     popoverStyle.display = 'none';
   } else {
     const elRect = el.getBoundingClientRect(); // 获取元素的大小及其相对于视口的位置
-    const elComputedStyle = window.getComputedStyle(el, null); // 获取元素 css 值
-    const rightOffset = parseInt(elComputedStyle.getPropertyValue('padding-right')) || 0;
-    const topOffset = parseInt(elComputedStyle.getPropertyValue('padding-top')) || 0;
+    const elComputedStyle = window.getComputedStyle(el, null); // 获取元素 css 值，返回 CSSStyleDeclaration 对象
+    const rightOffset = parseInt(elComputedStyle.getPropertyValue('padding-right')) || 0; // 右偏移量
+    const topOffset = parseInt(elComputedStyle.getPropertyValue('padding-top')) || 0; // 顶部偏移量
 
     popoverStyle.visibility = 'hidden';
     popoverStyle.display = 'block';
     popover.querySelector('.popover-content').textContent = title;
+    // 提示框是 fixed 定位，是根据 el 元素来进行，所以其提示框的 left 和 top 极限值就是 el 元素 left 和 top 距离。画个图就清晰了
     popoverStyle.left = elRect.left - popover.offsetWidth / 2 + (el.offsetWidth - rightOffset) / 2 + 'px';
-    popoverStyle.top = elRect.top - popover.offsetWidth + topOffset + 'px';
-    popoverStyle.display = 'block'
+    popoverStyle.top = elRect.top - popover.offsetHeight + topOffset + 'px';
+    popoverStyle.display = 'block';
     popoverStyle.visibility = 'visible';
   }
 }
 
+/**
+ * 获取提示框 DOM
+ */
 function getPopover() {
   let popover = document.querySelector('.title-popover');
 
@@ -31,7 +41,7 @@ function getPopover() {
         <div class="popover-content"></div>
       </div>
     `;
-
+    // 创建一个 Range 对象,为这个对象塞入一个 HTML 文档片段
     const fragment = document.createRange().createContextualFragment(tpl);
 
     document.body.appendChild(fragment);

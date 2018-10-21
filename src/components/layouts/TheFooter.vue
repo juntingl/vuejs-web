@@ -72,6 +72,7 @@ import title from '@/directives/title';
 
 export default {
   name: 'TheFooter',
+  // 注册局部指令
   directives: {
     title
   },

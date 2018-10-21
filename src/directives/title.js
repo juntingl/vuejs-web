@@ -53,7 +53,7 @@ function getPopover() {
 
 
 export default {
-  bind(el, binding, vnode) {
+  bind(el, binding) {
     const events = ['mouseenter', 'mouseleave', 'click'];
     const handler = (event) => {
       if (event.type === 'mouseenter') {

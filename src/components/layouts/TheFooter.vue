@@ -68,6 +68,9 @@
 </template>
 
 <script>
+import ucloud_logo from '@/assets/images/ucloud.png';
+import sendCloud_logo from '@/assets/images/sendCloud.png';
+import qiniu_logo from '@/assets/images/qiniu.png';
 import title from '@/directives/title';
 
 export default {
@@ -109,12 +112,12 @@ export default {
         title: '赞助商',
         list: [
           {
-            logo: 'https://lccdn.phphub.org/uploads/banners/bQawWl3vT5dc2lYx5JZ7.png',
+            logo: ucloud_logo,
             title: '本站服务器由 UCloud 赞助',
             link: 'http://www.ucloud.cn/?utm_source=zanzhu&utm_campaign=phphub&utm_medium=display&utm_content=yejiao&ytag=phphubyejiao'
           },
           {
-            logo: 'https://lccdn.phphub.org/uploads/banners/yGLIR0idW7zsInjsNmzr.png',
+            logo: qiniu_logo,
             title: '本站 CDN 服务由七牛赞助',
             link: 'http://www.qiniu.com/?utm_source=phphub'
           },
@@ -124,7 +127,7 @@ export default {
             link: 'https://www.upyun.com/'
           },
           {
-            logo: 'https://lccdn.phphub.org/uploads/banners/JpTCK6OKYBIrBIWdtob8.png',
+            logo: sendCloud_logo,
             title: '订阅邮件赞助商：SendCloud',
             link: 'http://www.sendcloud.net/'
           }

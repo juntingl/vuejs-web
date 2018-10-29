@@ -4,11 +4,11 @@
       <a href="#" class="btn btn-default login-btn">
         <i class="fa fa-user"></i> 登 录
       </a>
-      <a href="#" class="btn btn-default login-btn">
+      <router-link to="/auth/register" class="btn btn-default login-btn">
         <i class="fa fa-user-plus"></i> 注 册
-      </a>
+      </router-link>
     </div>
-  </div>·
+  </div>
 </template>
 
 <script>

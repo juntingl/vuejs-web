@@ -80,7 +80,7 @@ function getErrorElement(el) {
 }
 
 export default {
-  bind(el, binding, vnode) {
+  bind(el, binding) {
     const { value, arg, modifiers } = binding;
     // 如果没传对应的事件名称参数，就默认使用 change 事件
     // ~indexOf() => indexOf() !== -1
@@ -113,7 +113,7 @@ export default {
    * @param {Object} binding
    * @param {Object} vnode
    */
-  inserted(el, binding, vnode) {
+  inserted(el, binding) {
     const { value, modifiers } = binding;
     // 指定当前一系列验证项的父级，我们这里指定为含 data-validator-form 的元素
     const form = el.closest('[data-validator-form]');

@@ -6,22 +6,43 @@
           <h3 class="panel-title">请注册</h3>
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body" data-validator-form>
           <div class="form-group">
             <label class="control-label">用户名</label>
-            <input type="text" class="form-control" placeholder="请填写用户名">
+            <input
+              v-validator:input.required="{ regex: /^[a-zA-Z]+\w*\s?\w*/, error: '用户名要求以字母开头的单词字符' }"
+              type="text"
+              class="form-control"
+              placeholder="请填写用户名"
+            >
           </div>
           <div class="form-group">
             <label class="control-label">密码</label>
-            <input type="password" class="form-control" placeholder="请填写密码">
+            <input
+              v-validator.required="{ regex: /^\w{6,16}$/, error: '密码要求 6 ~ 16 个单词字符' }"
+              id="password"
+              type="password"
+              class="form-control"
+              placeholder="请填写密码"
+            >
           </div>
           <div class="form-group">
             <label class="control-label">确认密码</label>
-            <input type="password" class="form-control" placeholder="请填写确认密码">
+            <input
+              v-validator.required="{ target: '#password', title: '确认密码与密码' }"
+              type="password"
+              class="form-control"
+              placeholder="请填写确认密码"
+            >
           </div>
           <div class="form-group">
             <label class="control-label">图片验证码</label>
-            <input type="text" class="form-control" placeholder="请填写验证码">
+            <input
+              v-validator.required="{ title: '请填写验证码' }"
+              type="text"
+              class="form-control"
+              placeholder="请填写验证码"
+            >
           </div>
             <div class="thumbnail" title="点击图片重新获取验证码">
               <div class="captcha"></div>

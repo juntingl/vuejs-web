@@ -44,8 +44,8 @@
               placeholder="请填写验证码"
             >
           </div>
-            <div class="thumbnail" title="点击图片重新获取验证码">
-              <div class="captcha"></div>
+            <div class="thumbnail" title="点击图片重新获取验证码" @click="getCaptcha">
+              <div class="captcha vcenter" v-html="captchaTpl"></div>
           </div>
           <button type="submit" class="btn btn-lg btn-success btn-block">
             <i class="fa fa-btn fa-sign-in"></i> 注册
@@ -57,12 +57,30 @@
 </template>
 
 <script>
+import createCaptcha from '@/utils/createCaptcha';
 export default {
-  name: 'Register'
+  name: 'Register',
+  data () {
+    return {
+      captchaTpl: '' // 验证码模版
+    }
+  },
+  // 实例创建完成后被调用，这个时候可以访问到实例的数据化对象和方法了。
+  created() {
+    this.getCaptcha()
+  },
+  methods: {
+    getCaptcha () {
+      const { tpl, captcha } = createCaptcha();
+      this.captchaTpl = tpl;
+      this.localCaptcha = captcha; // 自定义属性，不是模板需要的数据
+    }
+  }
 }
 </script>
 
 <style scoped>
 .thumbnail { width: 170px; margin-top: 10px; cursor: pointer;}
 .thumbnail .captcha { height: 46px; background: #E1E6E8;}
+.captcha { font-size: 24px; font-weight: bold; user-select: none; }
 </style>

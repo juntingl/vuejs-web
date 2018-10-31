@@ -126,7 +126,7 @@ export default {
         // 验证所有项
         validate(el, modifiers, value);
         // 获取错误信息
-        const errors = form.querySelector('.has-error');
+        const errors = form.querySelectorAll('.has-error');
 
         if (!errors.length) {
           // 没有错误信息时，在按钮上添加一个 canSubmit 属性，并指定为 true

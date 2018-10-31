@@ -10,6 +10,7 @@
           <div class="form-group">
             <label class="control-label">用户名</label>
             <input
+              v-model.trim="username"
               v-validator:input.required="{ regex: /^[a-zA-Z]+\w*\s?\w*/, error: '用户名要求以字母开头的单词字符' }"
               type="text"
               class="form-control"
@@ -19,6 +20,7 @@
           <div class="form-group">
             <label class="control-label">密码</label>
             <input
+              v-model.trim="password"
               v-validator.required="{ regex: /^\w{6,16}$/, error: '密码要求 6 ~ 16 个单词字符' }"
               id="password"
               type="password"
@@ -29,6 +31,7 @@
           <div class="form-group">
             <label class="control-label">确认密码</label>
             <input
+              v-model.trim="cpassword"
               v-validator.required="{ target: '#password', title: '确认密码与密码' }"
               type="password"
               class="form-control"
@@ -38,6 +41,7 @@
           <div class="form-group">
             <label class="control-label">图片验证码</label>
             <input
+              v-model.trim="captcha"
               v-validator.required="{ title: '请填写验证码' }"
               type="text"
               class="form-control"
@@ -47,7 +51,11 @@
             <div class="thumbnail" title="点击图片重新获取验证码" @click="getCaptcha">
               <div class="captcha vcenter" v-html="captchaTpl"></div>
           </div>
-          <button type="submit" class="btn btn-lg btn-success btn-block">
+          <button
+            @click="register"
+            type="submit"
+            class="btn btn-lg btn-success btn-block"
+          >
             <i class="fa fa-btn fa-sign-in"></i> 注册
           </button>
         </div>
@@ -58,11 +66,17 @@
 
 <script>
 import createCaptcha from '@/utils/createCaptcha';
+import ls from '@/utils/localStorage';
+
 export default {
   name: 'Register',
   data () {
     return {
-      captchaTpl: '' // 验证码模版
+      captchaTpl: '', // 验证码模版
+      username: '',
+      password: '',
+      cpassword: '', // 确认密码
+      captcha: '' // 验证码
     }
   },
   // 实例创建完成后被调用，这个时候可以访问到实例的数据化对象和方法了。
@@ -70,10 +84,50 @@ export default {
     this.getCaptcha()
   },
   methods: {
+    // 获取验证码
     getCaptcha () {
       const { tpl, captcha } = createCaptcha();
       this.captchaTpl = tpl;
       this.localCaptcha = captcha; // 自定义属性，不是模板需要的数据
+    },
+    register(e) {
+      // 下次 DOM 更新循环结束之后执行的延迟回调
+      // 点击注册的时候，验证的过程中会去给按钮天加 `canSubmit` 属性，但这个时候 DOM 并没有立即更新，需要在延迟回调里获取更新后的元素属性
+      console.log('nextTick 前: 96', e.target.canSubmit)
+      this.$nextTick(() => {
+        const target = e.target.type === 'submit' ? e.target : e.target.parentElement;
+        console.log('nextTick 后: 99', e.target.canSubmit)
+        if (target.canSubmit) {
+          this.submit()
+        }
+      })
+    },
+    submit() {
+      if (this.captcha.toUpperCase() !== this.localCaptcha) {
+        alert('验证码不正确')
+        this.getCaptcha()
+      } else {
+        const user = {
+          name: this.username,
+          password: this.password,
+          avatar: `https://api.adorable.io/avatars/200/${this.username}.png`
+        }
+        const localUser = ls.getItem('user');
+
+        if (localUser) {
+          if (localUser.name === user.name) {
+            alert('用户名已存在')
+          } else {
+            this.login(user)
+          }
+        } else {
+          this.login(user)
+        }
+      }
+    },
+    login(user) {
+      ls.setItem('user', user);
+      alert('注册成功')
     }
   }
 }

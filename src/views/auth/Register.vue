@@ -1,6 +1,9 @@
 <template>
   <div class="row">
     <div class="col-md-4 col-md-offset-4 floating-box">
+      <!-- 消息组件 -->
+      <Message :show.sync="msgShow" :type="msgType" :msg="msg"/>
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">请注册</h3>
@@ -132,6 +135,7 @@ export default {
       ls.setItem('user', user);
       this.showMsg('注册成功', 'success');
     },
+    // Message 消息框
     showMsg(msg, type = 'warning') {
       this.msg = msg;
       this.msgType = type;

@@ -48,7 +48,14 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch('logout')
+      this.$swal({
+        text: '你确定要退出吗？',
+        confirmButtonText: '退出'
+      }).then(res => {
+        if (res.value) {
+          this.$store.dispatch('logout')
+        }
+      })
     }
   }
 }

@@ -38,8 +38,6 @@ $link-hover-color: #22ddde;
 
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap";
 @import "~font-awesome/scss/font-awesome";
-@import "./stlyes/main.scss";
-@import "./stlyes/extra.scss";
-
-body > .container { margin-top: 15px; }
+@import "./styles/main";
+@import "./styles/extra";
 </style>

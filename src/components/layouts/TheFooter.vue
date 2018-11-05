@@ -170,10 +170,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-a:hover,
-a:focus {
-  color: #4fc08d;;
-  transition: color .15s;
-}
+<style scoped>
+a:hover, a:focus { color: #4fc08d; transition: color .15s; }
 </style>

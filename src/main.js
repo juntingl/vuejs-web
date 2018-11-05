@@ -4,6 +4,10 @@ import router from './router';
 import store from './store';
 import './directives';
 import './components';
+import VueSweetalert2 from './plugins/vue-sweetalert2';
+
+// 使用插件
+Vue.use(VueSweetalert2)
 // 设置 false 阻止 Vue 在启动时生成生产提示
 Vue.config.productionTip = false
 

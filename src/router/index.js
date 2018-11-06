@@ -1,29 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import routes from './routes';
 
 // 使用（安装） Vue-Router 插件
 // *需要在 new Vue() 之前调用
 Vue.use(Router)
-
-const routes = [
-  {
-    path: '/auth/register',
-    name: 'Register',
-    component: () => import('@/views/auth/Register')
-  },
-  // 首页
-  {
-    path: '/',
-    name: 'Home',
-    component: () => import('@/views/Home')
-  },
-  // 其他未配置的路由都跳转到首页
-  {
-    path: '*',
-    // 重定向
-    redirect: '/'
-  }
-];
 
 const router = new Router({
   // 路由模式，默认 ‘hash’ 使用 `#` 做路由; `history` 利用 `History API` 来完成页面跳转且无需重新加载,需要服务端配置支持

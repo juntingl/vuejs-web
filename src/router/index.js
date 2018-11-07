@@ -9,6 +9,8 @@ Vue.use(Router)
 const router = new Router({
   // 路由模式，默认 ‘hash’ 使用 `#` 做路由; `history` 利用 `History API` 来完成页面跳转且无需重新加载,需要服务端配置支持
   mode: 'history',
+  // 此值为一个 `css class 类名`, 精准激活当前访问路由，然后给此路由对应的 <router-link> 上，激活样式
+  linkExactActiveClass: 'active',
   // 路由配置列表
   routes
 });

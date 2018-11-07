@@ -20,5 +20,11 @@ export default [
     path: '*',
     // 重定向
     redirect: '/'
+  },
+  // 个人中心页
+  {
+    path: '/users/1/edit',
+    name: 'EditUsers',
+    component: () => import('@/views/users/Edit.vue')
   }
 ]

@@ -1,7 +1,7 @@
 module.exports = {
   outputDir: undefined,
   baseUrl: process.env.NODE_ENV === 'production'
-  ? '/vuejs-web/'
+  ? '/vuejs-web/dist/'
   : '/',
   assetsDir: undefined,
   runtimeCompiler: undefined,

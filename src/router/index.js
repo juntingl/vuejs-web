@@ -21,7 +21,9 @@ router.beforeEach((to, from, next) => {
   // 实例的 $options 是用于当前 Vue 实例的初始化选项
   const auth = router.app.$options.store.state.auth;
 
-  if (auth && ~to.path.indexOf('/auth/')) {
+  // 当用户已登录并且还访问 `/auth/` 相关页面时，跳转到首页
+  // 当用户没登录且目标页面要求登录时,跳转到首页
+  if ((auth && ~to.path.indexOf('/auth/')) || (!auth && to.meta.auth)) {
     next('/')
   } else {
     next()

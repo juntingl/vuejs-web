@@ -40,6 +40,12 @@ export default [
         name: 'EditAvatar',
         meta: { auth: true },
         component: () => import('@/views/users/Avatar.vue')
+      },
+      {
+        path: '/users/1/edit_password',
+        name: 'EditPassword',
+        meta: { auth: true },
+        component: () => import('@/views/users/Password.vue')
       }
     ]
   }

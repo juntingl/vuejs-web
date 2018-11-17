@@ -48,5 +48,12 @@ export default [
         component: () => import('@/views/users/Password.vue')
       }
     ]
+  },
+  // 创建文章
+  {
+    path: '/articles/create',
+    name: 'Create',
+    meta: { auth: true },
+    component: () => import('@/views/articles/Create.vue')
   }
 ]

@@ -102,7 +102,7 @@ export default {
           content
         };
 
-        console.log('创建文章数据: ', article);
+        this.$store.dispatch('post', { article })
         this.clearData();
       }
     },

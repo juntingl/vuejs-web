@@ -24,7 +24,7 @@ export default [
   // 个人中心页
   {
     path: '/users/1/edit',
-    name: 'EditUsers',
+    // name: 'EditUsers', // 拥有默认子路由，name 属性就没有用了
     component: () => import('@/views/users/Edit.vue'),
     children: [
       {

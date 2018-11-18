@@ -20,8 +20,9 @@
 </template>
 
 <script>
-import SimpleMDE from 'simplemde'
-import hljs from 'highlight.js'
+import SimpleMDE from 'simplemde';
+import hljs from 'highlight.js';
+import emoji from 'node-emoji';
 
 export default {
   name: 'Content',
@@ -42,7 +43,8 @@ export default {
 
       this.title = title;
       // 使用编辑器的 markdown 方法将 Markdown 内容转成 HTML
-      this.content = SimpleMDE.prototype.markdown(content);
+      // 为 => 先使用 emojify 方法解析 emoji 字符串标识，name => name 表示不认识的就返回原值
+      this.content = SimpleMDE.prototype.markdown(emoji.emojify(content, name => name));
       this.date = date;
 
       this.$nextTick(() => {

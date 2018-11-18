@@ -12,6 +12,7 @@
     "font-awesome": "^4.7.0",
     "highlight.js": "^9.13.1",
     "moment": "^2.22.2",
+    "node-emoji": "^1.8.1",
     "simplemde": "^1.11.2",
     "sweetalert2": "^7.28.11",
     "vue": "^2.5.17",

@@ -28,18 +28,37 @@ export const post = ({ commit, state }, { article, articleId }) => {
         // 将当前 articleId 在文章长度基础上加 1
         articleId = articles.length + 1;
       }
-    }
 
-    articles.push({
-      uid,
-      articleId,
-      title,
-      content,
-      date
-    })
+      articles.push({
+        uid,
+        articleId,
+        title,
+        content,
+        date
+      })
+    } else { // 如果有传 articleId, 说明是修改
+      // 找到与 articleId 对应的文章
+      for (let article of articles) {
+        if (parseInt(article.articleId) === parseInt(articleId)) {
+          article.title = title;
+          article.content = content;
+          break
+        }
+      }
+    }
 
     commit('UPDATE_ARTICLES', articles);
     // 跳转到首页，并附带 articleId 和 showMsg 参数，showMsg 用来指示目标页面显示一个提示，我们稍后添加相关逻辑
     router.push({ name: 'Content', params: { articleId, showMsg: true }})
+  } else {
+    for (let article of articles) {
+      if (parseInt(article.articleId) === parseInt(articleId)) {
+        articles.splice(articles.indexOf(article), 1);
+        break
+      }
+    }
+
+    commit('UPDATE_ARTICLES', articles);
+    router.push({ name: 'Home', params: { showMsg: true }});
   }
 }

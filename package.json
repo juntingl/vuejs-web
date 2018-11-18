@@ -11,6 +11,7 @@
     "bootstrap-sass": "^3.3.7",
     "font-awesome": "^4.7.0",
     "highlight.js": "^9.13.1",
+    "moment": "^2.22.2",
     "simplemde": "^1.11.2",
     "sweetalert2": "^7.28.11",
     "vue": "^2.5.17",
@@ -34,7 +35,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-case-declarations": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

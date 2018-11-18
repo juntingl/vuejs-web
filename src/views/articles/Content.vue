@@ -6,7 +6,7 @@
           <h1 class="text-center">{{ title }}</h1>
           <div class="article-meta text-center">
             <i class="fa fa-clock-o"></i>
-            {{ date }}
+            <abbr>{{ date | moment('from', { startOf: 'minute' })}}</abbr>
           </div>
           <div class="entry-content">
             <div class="content-body entry-content panel-body ">
@@ -29,7 +29,7 @@ export default {
     return {
       title: '', // 文章标题
       content: '', // 文章内容
-      date: ''
+      date: '' // 创建时间
     }
   },
   // 在实例创建完成后,给属性值赋予初始化值

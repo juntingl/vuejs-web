@@ -56,17 +56,29 @@ export default [
     meta: { auth: true },
     component: () => import('@/views/articles/Create.vue')
   },
-  // 文章详情
-  {
-    path: '/articles/:articleId/content',
-    name: 'Content',
-    component: () => import('@/views/articles/Content.vue')
-  },
   // 编辑文章
   {
     path: '/articles/:articleId/edit',
     name: 'Edit',
     meta: { auth: true },
     component: () => import('@/views/articles/Create.vue')
+  },
+  // 个人专栏
+  {
+    path: '/:user',
+    component: () => import('@/views/articles/Column.vue'),
+    children: [
+      {
+        // 默认子路由，会自动加载此路由，使用名称导航时，应该使用默认子路由的名称，父级 name 就需要去掉了
+        path: '',
+        name: 'Column',
+        component: () => import('@/views/articles/List.vue')
+      },
+      {
+        path: '/articles/:articleId/content',
+        name: 'Content',
+        component: () => import('@/views/articles/Content.vue')
+      }
+    ]
   }
 ]

@@ -132,6 +132,8 @@ export default {
           }
         })
       } else {
+        // currentTarget 标示事件发生的目标，e.target 表示事件发生的对象；将 click 事件移到父级上，就能发现其区别
+        // 两个如果指向的都是一个元素的话，用那个都一样
         const target = e.currentTarget;
         // 点赞按钮是否含有 active 类，我们用它来判断是否已赞
         const active = target.classList.contains('active');

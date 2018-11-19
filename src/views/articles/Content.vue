@@ -31,6 +31,8 @@
           >
             <i class="fa fa-thumbs-up"></i> {{ likeClass ? '已赞' : '点赞' }}
           </a>
+          <div class="or"></div>
+          <button @click="showQrcode = true" class="btn btn-success"><i class="fa fa-heart"></i> 打赏</button>
         </div>
         <div class="voted-users">
           <div class="user-lists">
@@ -46,6 +48,22 @@
         </div>
       </div>
     </div>
+    <!-- 打赏弹窗 show.sync 双向绑定-->
+    <Modal :show.sync="showQrcode" class="text-center">
+      <div v-if="user" slot="title">
+        <img :src="user.avatar" class="img-thumbnail avatar" alt="">
+      </div>
+      <div>
+        <p class="text-md">如果你想学习更多前端的知识，VuejsCaff.com 是个不错的开始</p>
+        <div class="payment-qrcode inline-block">
+          <h5>扫一扫打开 VuejsCaff.com</h5>
+          <p><img src="https://vuejscaffcdn.phphub.org/uploads/images/201803/25/2/g3CFVs0h7B.jpeg?imageView2/2/w/1024/h/0" width="160" alt=""></p>
+        </div>
+      </div>
+      <div slot="footer">
+        <div class="text-center">祝你学习愉快 :)</div>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -64,7 +82,8 @@ export default {
       date: '', // 创建时间
       uid: 1, // 用户 ID
       likeUsers: [], // 点赞用户列表
-      likeClass: '' // 点赞样式
+      likeClass: '', // 点赞样式
+      showQrcode: false // 是否显示打赏弹窗
     };
   },
   computed: {

@@ -109,3 +109,26 @@ export const like = ({ commit, state }, { articleId, isAdd }) => {
   // 返回点赞用户列表
   return likeUsers
 }
+
+// 参数 articleId 是文章 ID；comment 是评论内容；commentId 是评论 ID
+export const comment = ({ commit, state }, { articleId, comment, commentId }) => {
+  // 仓库的文章
+  let articles = state.articles;
+  // 评论列表
+  let comments = [];
+
+  if (!Array.isArray(articles)) articles = [];
+
+  for (let article of articles) {
+    // 找到对应文章时
+    if (parseInt(article.articleId) === parseInt(articleId)) {
+      // 更新评论列表
+      comments = Array.isArray(article.comments) ? article.comments : comments;
+
+      if (comment) {
+        // 获取用户传入的评论内容
+      }
+    }
+  }
+
+}

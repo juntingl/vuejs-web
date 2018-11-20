@@ -1,26 +1,33 @@
 <template>
   <div>
-    <!-- .self 事件修饰符，当 event.target 是当前元素自身时触发事件处理函数 -->
-    <div v-show="show" @click.self="close" class="modal" style="display: block;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button @click="close" class="close">X</button>
-            <h4 class="modal-title">
-              <slot name="title"></slot>
-            </h4>
-          </div>
-          <div class="modal-body">
-            <slot></slot>
-          </div>
-          <div class="modal-footer">
-            <slot name="footer"></slot>
+    <transition
+      enter-active-class="animated fadeInDown"
+      leave-active-class="animated fadeOutUp"
+    >
+      <!-- .self 事件修饰符，当 event.target 是当前元素自身时触发事件处理函数 -->
+      <div v-show="show" @click.self="close" class="modal" style="display: block;">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button @click="close" class="close">X</button>
+              <h4 class="modal-title">
+                <slot name="title"></slot>
+              </h4>
+            </div>
+            <div class="modal-body">
+              <slot></slot>
+            </div>
+            <div class="modal-footer">
+              <slot name="footer"></slot>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
 
-    <div v-show="show" @click="close" class="modal-backdrop fade in"></div>
+    <transition name="fade">
+      <div v-show="show" @click="close" class="modal-backdrop fade in"></div>
+    </transition>
   </div>
 </template>
 
@@ -56,5 +63,7 @@ export  default {
 </script>
 
 <style scoped>
-
+.animated{ animation-duration: .4s; }
+.fade-enter-active, .fade-leave-active { transition: .5s }
+.fade-enter, .fade-leave-to { opacity: 0; }
 </style>

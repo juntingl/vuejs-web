@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- .self 事件修饰符，当 event.target 是当前元素自身时触发事件处理函数 -->
-    <div v-show="show" @click.self="close" class="modal" style="display: blok;">
+    <div v-show="show" @click.self="close" class="modal" style="display: block;">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -48,7 +48,7 @@ export  default {
       if (value) {
         bodyClassList.add('modal-open');
       } else {
-        bodyClassList.rmeove('modal-open')
+        bodyClassList.remove('modal-open')
       }
     }
   }

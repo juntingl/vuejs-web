@@ -51,13 +51,13 @@
     <!-- 打赏弹窗 show.sync 双向绑定-->
     <Modal :show.sync="showQrcode" class="text-center">
       <div v-if="user" slot="title">
-        <img :src="user.avatar" class="img-thumbnail avatar" alt="">
+        <img :src="user.avatar" class="img-thumbnail avatar" width="48" alt="">
       </div>
       <div>
         <p class="text-md">如果你想学习更多前端的知识，VuejsCaff.com 是个不错的开始</p>
         <div class="payment-qrcode inline-block">
           <h5>扫一扫打开 VuejsCaff.com</h5>
-          <p><img src="https://vuejscaffcdn.phphub.org/uploads/images/201803/25/2/g3CFVs0h7B.jpeg?imageView2/2/w/1024/h/0" width="160" alt=""></p>
+          <p><qrcode-vue :value="someUrl" size="160"></qrcode-vue></p>
         </div>
       </div>
       <div slot="footer">
@@ -72,9 +72,13 @@ import SimpleMDE from 'simplemde';
 import hljs from 'highlight.js';
 import emoji from 'node-emoji';
 import { mapState } from 'vuex';
+import QrcodeVue from 'qrcode.vue';
 
 export default {
   name: 'Content',
+  components: {
+    QrcodeVue
+  },
   data() {
     return {
       title: '', // 文章标题
@@ -83,7 +87,8 @@ export default {
       uid: 1, // 用户 ID
       likeUsers: [], // 点赞用户列表
       likeClass: '', // 点赞样式
-      showQrcode: false // 是否显示打赏弹窗
+      showQrcode: false, // 是否显示打赏弹窗
+      someUrl: 'http://blog.pycoder.club/'
     };
   },
   computed: {

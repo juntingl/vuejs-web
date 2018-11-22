@@ -65,6 +65,45 @@
       </div>
     </Modal>
 
+    <!-- 评论列表 -->
+    <div class="replies panel panel-default list-panel replies-index">
+      <div class="panel-heading">
+        <div class="total">
+          回复数量：<b>{{ comments.length }}</b>
+        </div>
+      </div>
+      <div class="panel-body">
+        <ul id="reply-list" class="list-group row">
+          <li v-for="(comment, index) in comments" :key="comment.commentId"  class="list-group-item media">
+            <div class="avatar avatar-container pull-left">
+              <router-link :to="`/${comment.uname}`">
+                <img :src="comment.uavatar" class="media-object img-thumbnail avatar avatar-middle">
+              </router-link>
+            </div>
+            <div class="infos">
+              <div class="media-heading">
+                <router-link :to="`${comment.uname}`" class="remove-padding-left author rm-link-color">
+                  {{ comment.uanme }}
+                </router-link>
+              </div>
+              <div class="meta">
+                <a :id="`reply${index + 1}`" :href="`#reply${index + 1}`" class="anchor">#{{ index + 1  }}</a>
+                <span> ⋅ </span>
+                <abbr class="timeago">
+                  {{ comment.date | moment('form', { startOf: 'second' })}}
+                </abbr>
+              </div>
+            </div>
+
+            <div class="preview media-body markwon-reply markdown-body" v-html="comment.content"></div>
+          </li>
+        </ul>
+        <div v-show="!comments.length" class="empty-block">
+          暂无评论～～
+        </div>
+      </div>
+    </div>
+
     <!-- 评论框 -->
     <div id="reply-box" class="reply-box box-block">
       <div class="form-group comment-editor">
@@ -102,7 +141,8 @@ export default {
       likeClass: '', // 点赞样式
       showQrcode: false, // 是否显示打赏弹窗
       someUrl: 'http://blog.pycoder.club/',
-      commentHtml: '' // 评论 HTML
+      commentHtml: '', // 评论 HTML
+      comments: [] // 评论列表
     };
   },
   computed: {
@@ -115,7 +155,7 @@ export default {
     const article = this.$store.getters.getArticleById(articleId);
 
     if (article) {
-      let { uid, title, content, date, likeUsers } = article;
+      let { uid, title, content, date, likeUsers, comments } = article;
 
       this.uid = uid;
       this.title = title;
@@ -128,6 +168,8 @@ export default {
       this.likeUsers = likeUsers || [];
       // 更新 likeClass,点赞用户列表包含当前用户时，赋值为 active, 表示已点赞
       this.likeClass = this.likeUsers.some(likeUser => likeUser.uid === 1) ? 'active' : '';
+      // 渲染文章列表
+      this.renderComments(comments);
 
       this.$nextTick(() => {
         // 遍历当前实例下的 'pre code' 元素
@@ -240,8 +282,15 @@ export default {
         this.$store.dispatch('comment', {
           comment: { content: this.commentMarkdown },
           articleId: this.articleId
-        }).then(comments => {
-          console.log(comments)
+        }).then(this.renderComments) // 在 .then 的回调里，调用 this.renderComments 渲染评论
+
+        this.simplemde.value('');
+        document.querySelector('#reply-btn').focus();
+
+        // 将最后的评论滚动到页面的顶部
+        this.$nextTick(() => {
+          const lastComment = document.querySelector('#reply-list li:last-child');
+          if (lastComment) lastComment.scrollIntoView(true);
         })
       }
 
@@ -249,6 +298,30 @@ export default {
       this.simplemde.value('');
       // 使用回复按钮获得焦点
       document.querySelector('#reply-btn').focus();
+    },
+    renderComments(comments) {
+      if (Array.isArray(comments)) {
+        // 深拷贝 comments 以不影响其原值，只处理了对象的第一层数据，
+        // 当对象能被 JSON 解析时，可以使用此方法进行完整的深拷贝：JSON.parse(JSON.stringify(comments))
+        // 等价与
+        // const newComments = comments.map(function (comment) {
+        //  return Obeject.assign({}, comment)
+        // })
+        const newComments = comments.map(comment => ({ ...comment }));
+        const user = this.user || {};
+
+        for (let comment of newComments) {
+          comment.uname = user.avatar;
+          comment.uavatar = user.avatar;
+          // 将评论内容从 Markdown 专成 Html
+          comment.content = SimpleMDE.prototype.markdown(emoji.emojify(comment.content, name => name));
+        }
+
+        // 更新实例的 comments
+        this.comments = newComments;
+        // 将 Markdown 格式的评论添加到当前实例
+        this.commentsMarkdown = comments;
+      }
     }
   }
 };

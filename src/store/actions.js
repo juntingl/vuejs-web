@@ -126,9 +126,35 @@ export const comment = ({ commit, state }, { articleId, comment, commentId }) =>
       comments = Array.isArray(article.comments) ? article.comments : comments;
 
       if (comment) {
-        // 获取用户传入的评论内容
+        // 获取用户传入的评论内容, 设置用户 ID 的默认值为 1
+        const { uid = 1, content } = comment;
+        const date = new Date();
+
+        if (commentId === undefined) {
+          const lastComment = comments[comments.length - 1];
+
+          // 新建 commentId
+          if (lastComment) {
+            commentId = parseInt(lastComment.commentId) + 1;
+          } else {
+            commentId = comments.length + 1; // 没有最后一篇文章 ID 就为1
+          }
+
+          // 在评论列表加入当前评论
+          comments.push({
+            uid,
+            commentId,
+            content,
+            date
+          })
+        }
       }
+      article.comments = comments;
+      break
     }
   }
-
+  // 提交
+  commit('UPDATE_ARTICLES', articles);
+  // 返回评论列表
+  return comments
 }

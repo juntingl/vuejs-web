@@ -129,7 +129,7 @@ export const comment = ({ commit, state }, { articleId, comment, commentId }) =>
         // 获取用户传入的评论内容, 设置用户 ID 的默认值为 1
         const { uid = 1, content } = comment;
         const date = new Date();
-
+        // 判断是否拥有 ID，区分新增和编辑
         if (commentId === undefined) {
           const lastComment = comments[comments.length - 1];
 
@@ -147,6 +147,23 @@ export const comment = ({ commit, state }, { articleId, comment, commentId }) =>
             content,
             date
           })
+        } else { // 编辑
+          for (let comment of comments) {
+            if (parseInt(comment.commentId) === parseInt(commentId)) {
+              // 更新评论内容
+              comment.content = content;
+              break
+            }
+          }
+        }
+      } else { // 不存在评论内容时
+        for (let comment of comments) {
+          // 找到对应的评论时
+          if (parseInt(comment.commentId) === parseInt(commentId)) {
+            // 删除评论
+            comments.splice(comments.indexOf(comment), 1)
+            break
+          }
         }
       }
       article.comments = comments;

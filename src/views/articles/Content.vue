@@ -86,6 +86,13 @@
                   {{ comment.uanme }}
                 </router-link>
               </div>
+              <span v-if="auth" class="operate pull-right">
+                <span v-if="comment.uid === 1">
+                  <a href="javascript:;" @click="editComment(comment.commentId, index)"><i class="fa fa-edit"></i></a>
+                  <span> ⋅ </span>
+                  <a href="javascript:;" @click="deleteComment(comment.commentId)"><i class="fa fa-trash-o"></i></a>
+                </span>
+              </span>
               <div class="meta">
                 <a :id="`reply${index + 1}`" :href="`#reply${index + 1}`" class="anchor">#{{ index + 1  }}</a>
                 <span> ⋅ </span>
@@ -111,7 +118,9 @@
         <textarea v-else disabled class="form-control" placeholder="需要登录后才能发表评论。" style="height: 172px;"></textarea>
       </div>
       <div class="form-group reply-post-submit">
-        <button id="reply-btn" :disabled="!auth" @click="comment" class="btn btn-primary">回复</button>
+        <button id="reply-btn" :disabled="!auth" @click="comment" class="btn btn-primary">
+          {{ commentId ? '保存编辑' : '回复' }}
+        </button>
         <span class="help-inline">Ctrl+Enter</span>
       </div>
       <div v-show="commentHtml" v-html="commentHtml" id="preview-box" class="box preview markdown-body"></div>
@@ -142,7 +151,8 @@ export default {
       showQrcode: false, // 是否显示打赏弹窗
       someUrl: 'http://blog.pycoder.club/',
       commentHtml: '', // 评论 HTML
-      comments: [] // 评论列表
+      comments: [], // 评论列表
+      commentId: undefined, // 评论 ID，标示是否编辑评论
     };
   },
   computed: {
@@ -214,6 +224,9 @@ export default {
         // 使用 Ctrl + Enter 时提交评论
         if (event.ctrlKey && event.keyCode === 13) {
           this.comment();
+        } else if (this.commentId && event.keyCode === 27) { // 存在 commentId，且按下 Esc 键时
+          // 取消编辑评论
+          this.cancelEditComment();
         }
       })
 
@@ -281,17 +294,22 @@ export default {
         // 分类 comment 事件以提交评论
         this.$store.dispatch('comment', {
           comment: { content: this.commentMarkdown },
-          articleId: this.articleId
+          articleId: this.articleId,
+          commentId: this.commentId
         }).then(this.renderComments) // 在 .then 的回调里，调用 this.renderComments 渲染评论
 
-        this.simplemde.value('');
-        document.querySelector('#reply-btn').focus();
+        if (this.commentId) { // 有 commentId 时，取消编辑评论
+          this.cancelEditComment();
+        } else {
+          this.simplemde.value('');
+          document.querySelector('#reply-btn').focus();
 
-        // 将最后的评论滚动到页面的顶部
-        this.$nextTick(() => {
-          const lastComment = document.querySelector('#reply-list li:last-child');
-          if (lastComment) lastComment.scrollIntoView(true);
-        })
+          // 将最后的评论滚动到页面的顶部
+          this.$nextTick(() => {
+            const lastComment = document.querySelector('#reply-list li:last-child');
+            if (lastComment) lastComment.scrollIntoView(true);
+          })
+        }
       }
 
       // 清空编辑器
@@ -322,6 +340,61 @@ export default {
         // 将 Markdown 格式的评论添加到当前实例
         this.commentsMarkdown = comments;
       }
+    },
+    editComment(commentId, commentIndex) {
+      // 编辑器
+      const simplemde = this.simplemde;
+      // 编辑器
+      const codemirror = simplemde.codemirror;
+      const comments = this.commentsMarkdown;
+
+      for (const comment of comments) {
+        // 找到与 commnetId 对应的评论时
+        if (parseInt(comment.commentId) === parseInt(commentId)) {
+          // 设置编辑器的内容为该评论
+          simplemde.value(comment.content);
+          // 编辑器获得焦点
+          codemirror.focus();
+          // 将光标移到内容最后面
+          codemirror.setCursor(codemirror.lineCount(), 0);
+          // 评论索引 + 1，用来指示页面滚动的位置
+          this.commentIndex = commentIndex + 1;
+          // 更新
+          this.commentId = commentId;
+          break;
+        }
+      }
+    },
+    cancelEditComment() {
+      // 清楚 commentId
+      this.commentId = undefined;
+      // 清空编辑器
+      this.simplemde.value('');
+      // 下次 DOM 更新后，将评论滚动回视图的顶部
+      this.$nextTick(() => {
+        if (this.commentId === undefined) return
+        const currentComment = document.querySelector(`#reply-list li:nth-child(${this.commentIndex})`);
+
+        if (currentComment) {
+          currentComment.scrollIntoView(true);
+          currentComment.querySelector('.opeadate a').focus();
+        }
+      })
+    },
+    deleteComment(commentId) {
+      console.log(commentId)
+      this.$swal({
+        text: '你确定要删除此评论吗？',
+        confirmButtonText: '删除'
+      }).then(res => {
+        if (res.value) {
+          this.$store.dispatch('comment', {
+            commentId,
+            articleId: this.articleId
+          }).then(this.renderComments)
+          this.cancelEditComment();
+        }
+      })
     }
   }
 };

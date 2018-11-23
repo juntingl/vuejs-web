@@ -13,6 +13,7 @@ export default [
   {
     path: '/',
     name: 'Home',
+    alias: '/topics', // 指定别名，来自此 `/topics` 路径的访问实际是对首页的访问
     component: () => import('@/views/Home')
   },
   // 其他未配置的路由都跳转到首页

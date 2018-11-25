@@ -26,8 +26,8 @@
                   <abbr class="timeago">{{ article.date | moment('from') }}</abbr>
                 </div>
               </router-link>
-              <router-link v-if="user" :to="`/${user.name}`" class="avatar pull-left">
-                <img :src="user.avatar" class="media-object img-thumbnail avatar avatar-middle">
+              <router-link :to="`/${article.uname}`" class="avatar pull-left">
+                <img :src="article.uavatar" class="media-object img-thumbnail avatar avatar-middle">
               </router-link>
               <router-link :to="`/articles/${article.articleId}/content`" tag="div" class="infos">
                 <div class="media-heading">
@@ -85,7 +85,10 @@ export default {
       'auth',
       'user',
       'articles'
-    ])
+    ]),
+    articles() {
+      return this.$store.getters.computedArticles
+    }
   },
   watch: {
     // 首页退出时 `beforeRouteEnter` 不会被调用

@@ -99,7 +99,6 @@ export default {
             introduction: this.introduction
           })
           this.$message.show('修改成功');
-          console.log(this)
         }
       })
     }

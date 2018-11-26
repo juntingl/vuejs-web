@@ -66,12 +66,10 @@ export default {
       // 当前文章
       const article = this.$store.getters.getArticleById(articleId);
       // 存在当前文章时，设置用户数据为当前文章的用户信息，并使用文章的 uname 获取用户文章
-      console.log(article, 69)
       if (article) {
         this.userName = article.uname;
         this.userAvatar = article.uavatar;
         this.articles = this.$store.getters.getArticlesByUid(null, article.uname);
-        console.log(this.userName, this.userAvatar, this.articles, 74)
       } else if (user) {
         // 存在 user 参数时，使用路由的 user 获取对应用户文章
         const articles = this.$store.getters.getArticlesByUid(null, user);

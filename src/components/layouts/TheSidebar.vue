@@ -15,6 +15,19 @@
         </Slider>
       </div>
     </div>
+    <div class="panel panel-default corner-radius panel-active-users">
+      <div class="panel-heading text-center">
+        <h3 class="panel-title">活跃用户</h3>
+      </div>
+      <div class="panel-body">
+        <div class="users-label">
+          <router-link v-for="(user, index) in activeUsers" :to="`/${user.name}`" :key="index" class="users-label-item">
+            <img :src="user.avatar" class="avatar-small inline-block">
+            {{ user.name }}
+          </router-link>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,8 +56,14 @@ export default {
             "https://lccdn.phphub.org/uploads/banners/tEd4GxhMp6VMh9e0hrUH.jpg",
           link: "https://laravel-china.org/topics/7657"
         }
-      ]
+      ],
+      activeUsers: [], // 活跃用户
     };
+  },
+  created() {
+    this.$axios.get('/users/active').then(response => {
+      this.activeUsers = response.data
+    })
   }
 };
 </script>

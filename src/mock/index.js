@@ -40,3 +40,30 @@ Mock.mock('/users/active', 'get', () => {
 
   return activeUsers
 })
+
+// 拦截最热文章请求并返回相关数据，请求方法为 POST
+Mock.mock('/articles/hot', 'post', options => {
+  // 将评论最少的文章排在前面
+  let filtersArticles = store.getters.getArticlesByFilter('noreply');
+  // 将评论最多的文章排在前面
+  let articles = filtersArticles.reverse();
+  // 取 7 天内评论最多的文章
+  let hotArticles = articles.filter(article => (new Date() - new Date(article.date) < 604800000));
+  // 文章条数
+  let num;
+
+  // 没有传递 num 时使用它
+  if (options.body) {
+    try {
+      // options.body 的值是字符串类型的数据
+      num = JSON.parse(options.body).num
+    } catch (e) {
+      //
+    }
+  }
+
+  // 取前 num 条评论最多的文章，默认 10 条
+  hotArticles = hotArticles.slice(0, num || 10);
+
+  return hotArticles
+})

@@ -47,14 +47,19 @@
       </div>
     </div><!-- 过滤帖子方式列表 End -->
     <!-- 帖子列表 End -->
+    <TheSidebar/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import TheSidebar from '@/components/layouts/TheSidebar';
 
 export default {
   name: 'Home',
+  components: {
+    TheSidebar
+  },
   data() {
     return {
       msg: '',

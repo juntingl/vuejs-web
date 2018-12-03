@@ -14,7 +14,10 @@ const state = {
   // 添加 auth 来保存当前用户的登录状态
   auth: ls.getItem('auth'),
   // 所有文章状态
-  articles: ls.getItem('articles')
+  articles: ls.getItem('articles'),
+  // 搜索值, 各个页面都需要使用到搜索值
+  searchValue: '',
+  origin: ~location.origin.indexOf('github.io') ? `${location.origin}/vuejs-web/dist` : location.origin
 }
 
 // 更改状态的方法，不能包含异步操作
@@ -32,6 +35,9 @@ const mutations = {
   UPDATE_ARTICLES(state, articles) {
     state.articles = articles;
     ls.setItem('articles', articles);
+  },
+  UPDATE_SEARCH_VALUE(state, searchValue) {
+    state.searchValue = searchValue;
   }
 }
 

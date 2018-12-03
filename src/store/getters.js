@@ -144,3 +144,45 @@ export const getArticlesByFilter = (state, getters) => (filter) => {
   }
   return filteredArticles
 }
+
+// 根据关键字 keyword 返回搜索结果
+export const getArticlesByKeyWord = (state, getters) => (keyWord, filter) => {
+  let articles = getters.computedArticles;
+  let results = [];
+
+  if (Array.isArray(articles)) {
+    articles.forEach(article => {
+      let { articleId, title, content } = article;
+      // 该正则表示文章标题或内容的关键字
+      const regex = new RegExp(`(${keyWord})`, 'gi');
+
+      if (~title.indexOf(keyWord) || ~content.indexOf(keyWord)) {
+        // url 是文章中没有的数据，我们结合 articleId 拼出完整的路径
+        const url = `${state.origin}/articles/${articleId}/content`;
+        // 给文章标题的关键字加上高亮，$1 匹配第一个括号的内容
+        title = title.replace(regex, '<span class="highlight">$1</span>');
+        // 给文章内容中的关键字加上高亮，只取内容的前100个字
+        content = content.substr(0, 100).replace(regex, '<span class="highlight">$1</span>');
+        // 等价于 Object.assign({}, article, { url: url, title: title, content })
+        results.push({...article, ...{url, title, content}});
+      }
+    })
+  }
+
+  // 评估排序方式
+  switch(filter) {
+    case 'vote':
+        // 将赞的最多的文章排在前面
+        results.sort((a, b) => {
+          const aLikeUsers = Array.isArray(a.likeUsers) ? a.likeUsers : [];
+          const bLikeUsers = Array.isArray(b.likeUsers) ? b.likeUsers : [];
+
+          return bLikeUsers.length - aLikeUsers.length;
+        })
+      break
+    default:
+        // 默认降标题含有关键字的文章排在前面
+        results.sort((a, b) => a.title.indexOf(keyWord) < b.title.indexOf(keyWord))
+  }
+  return results
+};

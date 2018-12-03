@@ -64,6 +64,12 @@ export default [
     meta: { auth: true },
     component: () => import('@/views/articles/Create.vue')
   },
+  // 搜索
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('@/views/Search.vue')
+  },
   // 个人专栏
   {
     path: '/:user',
